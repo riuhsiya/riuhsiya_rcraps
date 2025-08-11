@@ -232,3 +232,33 @@ fn main() {
     }
 }
 ```
+
+rust
+```rust
+fn main() {
+    let bytes: Vec<Vec<u8>> = vec![
+        vec![0xe3, 0x81, 0x94], // ご
+        vec![0xe3, 0x81, 0xaf], // は
+        vec![0xe3, 0x81, 0xbf], // み
+        vec![0xe3, 0x81, 0x9a], // ず
+        vec![0xe3, 0x81, 0xb2], // ひ
+        vec![0xe3, 0x81, 0xa8], // と
+        vec![0xe3, 0x81, 0x95], // さ
+        vec![0xe3, 0x81, 0x9b], // せ
+        vec![0xe3, 0x81, 0xa7], // で
+        vec![0xe3, 0x81, 0x8c], // が
+        vec![0xe3, 0x81, 0x91], // け
+    ];
+
+    // Mendefinisikan tipe data secara eksplisit untuk labels
+    let labels: [&str; 11] = [
+        " (go)", " (ha)", " (mi)", " (zu)", " (hi)",
+        " (to)", " (sa)", " (se)", " (de)", " (ga)", " (ke)",
+    ];
+
+    for (i, byte_vec) in bytes.iter().enumerate() {
+        let s = String::from_utf8(byte_vec.clone()).unwrap();
+        println!("{} {}: {}", i + 1, labels[i], s);
+    }
+}
+```
