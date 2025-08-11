@@ -262,3 +262,140 @@ fn main() {
     }
 }
 ```
+
+C
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    // Define the byte arrays representing the Japanese characters
+    unsigned char bytes[][3] = {
+        {0xe3, 0x81, 0x94}, // ご
+        {0xe3, 0x81, 0xaf}, // は
+        {0xe3, 0x81, 0xbf}, // み
+        {0xe3, 0x81, 0x9a}, // ず
+        {0xe3, 0x81, 0xb2}, // ひ
+        {0xe3, 0x81, 0xa8}, // と
+        {0xe3, 0x81, 0x95}, // さ
+        {0xe3, 0x81, 0x9b}, // せ
+        {0xe3, 0x81, 0xa7}, // で
+        {0xe3, 0x81, 0x8c}, // が
+        {0xe3, 0x81, 0x91}  // け
+    };
+
+    // Corresponding labels
+    const char *labels[] = {
+        " (go)", " (ha)", " (mi)", " (zu)", " (hi)",
+        " (to)", " (sa)", " (se)", " (de)", " (ga)", " (ke)"
+    };
+
+    int num_chars = sizeof(bytes) / sizeof(bytes[0]);
+
+    for (int i = 0; i < num_chars; i++) {
+        // Allocate buffer for null-terminated string
+        char str[4];
+        for (int j = 0; j < 3; j++) {
+            str[j] = bytes[i][j];
+        }
+        str[3] = '\0'; // Null-terminate the string
+
+        // Print index, label, and character
+        printf("%d %s: %s\n", i + 1, labels[i], str);
+    }
+
+    return 0;
+}
+```
+
++ c
+```c
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+// Fungsi untuk memeriksa keabsahan UTF-8
+bool is_valid_utf8(const unsigned char *data, size_t len) {
+    size_t i = 0;
+    while (i < len) {
+        unsigned char c = data[i];
+        size_t remaining;
+
+        if (c <= 0x7F) {
+            // ASCII (0xxxxxxx)
+            i++;
+        } else if ((c & 0xE0) == 0xC0) {
+            // 2-byte sequence
+            remaining = 1;
+            if (i + remaining >= len) return false;
+            if ((data[i + 1] & 0xC0) != 0x80) return false;
+            if (c == 0xC0 || c == 0xC1) return false; // overlong encoding
+            i += 2;
+        } else if ((c & 0xF0) == 0xE0) {
+            // 3-byte sequence
+            remaining = 2;
+            if (i + remaining >= len) return false;
+            if ((data[i + 1] & 0xC0) != 0x80 || (data[i + 2] & 0xC0) != 0x80) return false;
+            if (c == 0xE0 && (data[i + 1] & 0xE0) == 0x80) return false; // overlong
+            if (c == 0xED && (data[i + 1] & 0xE0) == 0xA0) return false; // surrogate
+            i += 3;
+        } else if ((c & 0xF8) == 0xF0) {
+            // 4-byte sequence
+            remaining = 3;
+            if (i + remaining >= len) return false;
+            if ((data[i + 1] & 0xC0) != 0x80 || (data[i + 2] & 0xC0) != 0x80 || (data[i + 3] & 0xC0) != 0x80) return false;
+            if (c == 0xF0 && (data[i + 1] & 0xF0) == 0x80) return false; // overlong
+            if (c > 0xF4 || (c == 0xF4 && (data[i + 1] & 0xF0) > 0x80)) return false; // > U+10FFFF
+            i += 4;
+        } else {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main() {
+    // Array of byte sequences representing characters
+    unsigned char bytes[][3] = {
+        {0xe3, 0x81, 0x94}, // ご
+        {0xe3, 0x81, 0xaf}, // は
+        {0xe3, 0x81, 0xbf}, // み
+        {0xe3, 0x81, 0x9a}, // ず
+        {0xe3, 0x81, 0xb2}, // ひ
+        {0xe3, 0x81, 0xa8}, // と
+        {0xe3, 0x81, 0x95}, // さ
+        {0xe3, 0x81, 0x9b}, // せ
+        {0xe3, 0x81, 0xa7}, // で
+        {0xe3, 0x81, 0x8c}, // が
+        {0xe3, 0x81, 0x91}  // け
+    };
+
+    // Labels
+    const char *labels[] = {
+        " (go)", " (ha)", " (mi)", " (zu)", " (hi)",
+        " (to)", " (sa)", " (se)", " (de)", " (ga)", " (ke)"
+    };
+
+    int num_chars = sizeof(bytes) / sizeof(bytes[0]);
+
+    for (int i = 0; i < num_chars; i++) {
+        size_t len = sizeof(bytes[i]) / sizeof(bytes[i][0]);
+
+        if (is_valid_utf8(bytes[i], len)) {
+            // Membuat string null-terminated
+            char str[4];
+            for (int j = 0; j < 3; j++) {
+                str[j] = bytes[i][j];
+            }
+            str[3] = '\0';
+
+            // Tampilkan hasil
+            printf("%d %s: %s\n", i + 1, labels[i], str);
+        } else {
+            printf("%d %s: invalid UTF-8 sequence\n", i + 1, labels[i]);
+        }
+    }
+
+    return 0;
+}
+```
