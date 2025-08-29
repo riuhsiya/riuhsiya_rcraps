@@ -1,3 +1,28 @@
+## git --force
+rm -rf .git && git init && git remote add origin git@github.com:riuhsiya/riuhsiya_rcrapsgo.git && git config --global user.name "riuhsiya" && git config --global user.email "riuhsiya@gmail.com" && git checkout -b main && git add . && git commit -m "init" && git push origin main --force
+```bash
+rm -rf .git && git init && git remote add origin git@github.com:riuhsiya/riuhsiya_rcrapsgo.git && git config --global user.name "riuhsiya" && git config --global user.email "riuhsiya@gmail.com" && git checkout -b main && git add . && git commit -m "init" && git push origin main --force
+```
+
+## git pull
+rm -rf riuhsiya_rcrapsgo && mkdir riuhsiya_rcrapsgo && cd riuhsiya_rcrapsgo && git init && git remote add origin git@github.com:riuhsiya/riuhsiya_rcrapsgo.git && git config --global user.name "riuhsiya" && git config --global user.email "riuhsiya@gmail.com" && git pull origin main --allow-unrelated-histories && git branch -M main
+```bash
+rm -rf riuhsiya_rcrapsgo && mkdir riuhsiya_rcrapsgo && cd riuhsiya_rcrapsgo && git init && git remote add origin git@github.com:riuhsiya/riuhsiya_rcrapsgo.git && git config --global user.name "riuhsiya" && git config --global user.email "riuhsiya@gmail.com" && git pull origin main --allow-unrelated-histories && git branch -M main
+```
+
+## git --force-with-lease
+git add . && git commit -m "up" --amend && git push -u origin main --force-with-lease
+```bash
+git add . && git commit -m "up" --amend && git push -u origin main --force-with-lease
+```
+```bash
+git --no-pager diff README.md
+git --no-pager diff --cached
+git config --global core.pager ""
+go mod init first_program
+go test -v
+```
+
 
 ```html
 <!DOCTYPE html>
