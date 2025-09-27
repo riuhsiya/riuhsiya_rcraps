@@ -88,7 +88,51 @@ server.listen(port, hostname, () => {
 
 ```
 
-## title: write_res_3
+## title: write_res_req.url_ifelse
+```javascript
+if (req.url === '/' || req.url === '/index.html') {
+    // halaman utama
+} else if (req.url === '/about') {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+    res.end('About Page');
+} else if (req.url === '/contact') {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+    res.end('Contact Page');
+} else {
+    // 404
+}
+
+```
+
+## title: write_res_req.url_switch
+```javascript
+switch (req.url) {
+    case '/':
+    case '/index.html':
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+        res.end('ROOT PAGE');
+        break;
+    case '/about':
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+        res.end('About Page');
+        break;
+    case '/contact':
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+        res.end('Contact Page');
+        break;
+    default:
+        res.statusCode = 404;
+        res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+        res.end('404 Not Found');
+}
+
+```
+## title: write_res
 ```javascript
 const routes = {
     '/': () => {
