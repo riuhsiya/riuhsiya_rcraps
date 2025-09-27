@@ -87,3 +87,34 @@ server.listen(port, hostname, () => {
 });
 
 ```
+
+## title: write_res_3
+```javascript
+const routes = {
+    '/': () => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+        res.end('ROOT PAGE');
+    },
+    '/about': () => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+        res.end('About Page');
+    },
+    '/contact': () => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+        res.end('Contact Page');
+    }
+};
+
+if (routes[req.url]) {
+    routes[req.url]();
+} else {
+    res.statusCode = 404;
+    res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
+    res.end('404 Not Found');
+}
+
+```
+
