@@ -89,6 +89,46 @@ server.listen(port, hostname, () => {
 
 ```
 
+## title: write_res_3
+```javascript
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const hostname = '127.0.0.1';
+const port = 3000;
+
+// Fungsi helper untuk mengirim response dengan otomatis atur header
+function sendResponse(res, statusCode, content, contentType = 'text/plain; charset=UTF-8') {
+  res.writeHead(statusCode, { 'Content-Type': contentType });
+  res.end(content);
+}
+
+const server = http.createServer((req, res) => {
+  // Jika request ke root, tampilkan index.html
+  if (req.url === '/' || req.url === '/index.html') {
+    const filePath = path.join(__dirname, 'index.html');
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        console.error('Internal Server Error: ', err);
+        sendResponse(res, 500, 'Error loading page', 'text/plain; charset=UTF-8');
+        return;
+      }
+      // Kirim file dengan Content-Type html
+      sendResponse(res, 200, data, 'text/html; charset=UTF-8');
+    });
+  } else {
+    // Untuk URL lain, berikan 404
+    sendResponse(res, 404, '404 Not Found', 'text/plain; charset=UTF-8');
+  }
+});
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
+
+```
+
 ## title: write_res_req.url_ifelse
 ```javascript
 if (req.url === '/' || req.url === '/index.html') {
