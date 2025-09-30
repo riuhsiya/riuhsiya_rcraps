@@ -65,6 +65,7 @@ const server = http.createServer((req, res) => {
     const filePath = path.join(__dirname, 'index.html');
     fs.readFile(filePath, (err, data) => {
       if (err) {
+        console.error('Internal Server Error: ', err);
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/plain; charset=UTF-8');
         res.end('Error loading page');
