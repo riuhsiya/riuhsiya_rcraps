@@ -108,10 +108,10 @@ const server = http.createServer((req, res) => {
   // Jika request ke root, tampilkan index.html
   if (req.url === '/' || req.url === '/index.html') {
     const filePath = path.join(__dirname, 'index.html');
-    fs.readFile(filePath, (err, data) => {
+    fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
         console.error('Internal Server Error: ', err);
-        sendResponse(res, 500, 'Error loading page', 'text/plain; charset=UTF-8');
+        sendResponse(res, 500, 'Error loading page');
         return;
       }
       // Kirim file dengan Content-Type html
@@ -119,7 +119,7 @@ const server = http.createServer((req, res) => {
     });
   } else {
     // Untuk URL lain, berikan 404
-    sendResponse(res, 404, '404 Not Found', 'text/plain; charset=UTF-8');
+    sendResponse(res, 404, '404 Not Found');
   }
 });
 
