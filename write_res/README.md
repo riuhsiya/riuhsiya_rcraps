@@ -129,7 +129,10 @@ server.listen(port, hostname, () => {
 
 ```
 
+
 ## title: write_res_3_rust
+$ cargo new write_res_3_rust
+
 ```rust
 use std::net::{TcpListener, TcpStream};
 use std::io::{Read, Write};
