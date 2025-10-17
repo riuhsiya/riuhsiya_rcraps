@@ -129,6 +129,67 @@ server.listen(port, hostname, () => {
 
 ```
 
+## title: write_res_3_rust
+```rust
+use std::net::{TcpListener, TcpStream};
+use std::io::{Read, Write};
+use std::fs;
+
+fn handle_client(mut stream: TcpStream) {
+    let mut buffer = [0; 1024];
+    match stream.read(&mut buffer) {
+        Ok(_) => {
+            let request = String::from_utf8_lossy(&buffer);
+            // Parse request line
+            let request_line = request.lines().next().unwrap_or("");
+            let parts: Vec<&str> = request_line.split_whitespace().collect();
+
+            if parts.len() >= 2 {
+                let method = parts[0];
+                let path = parts[1];
+
+                if method == "GET" && (path == "/" || path == "/index.html") {
+                    // Membaca file index.html
+                    match fs::read_to_string("index.html") {
+                        Ok(contents) => {
+                            let response = format!(
+                                "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Length: {}\r\n\r\n{}",
+                                contents.len(),
+                                contents
+                            );
+                            stream.write_all(response.as_bytes()).unwrap();
+                        }
+                        Err(_) => {
+                            let response = "HTTP/1.1 500 Internal Server Error\r\n\r\nError loading page";
+                            stream.write_all(response.as_bytes()).unwrap();
+                        }
+                    }
+                } else {
+                    // 404 Not Found
+                    let response = "HTTP/1.1 404 Not Found\r\n\r\n404 Not Found";
+                    stream.write_all(response.as_bytes()).unwrap();
+                }
+            }
+        }
+        Err(e) => eprintln!("Failed to read from socket: {}", e),
+    }
+}
+
+fn main() {
+    let listener = TcpListener::bind("127.0.0.1:3000").unwrap();
+    println!("Server running at http://127.0.0.1:3000/");
+
+    for stream in listener.incoming() {
+        match stream {
+            Ok(stream) => {
+                handle_client(stream);
+            }
+            Err(e) => eprintln!("Connection failed: {}", e),
+        }
+    }
+}
+```
+
 ## title: write_res_req.url_ifelse
 ```javascript
 if (req.url === '/' || req.url === '/index.html') {
