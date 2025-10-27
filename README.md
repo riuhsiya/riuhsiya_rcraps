@@ -57,6 +57,11 @@ func main() {
 }
 ```
 
+```javascript
+// u=https://tsh.io/blog/simple-guide-concurrency-node-js/
+// t=A simple guide to JavaScript concurrency in Node.js and a few traps that come with it
+```
+
 ## Selecting from Channels
 ```golang
 // https://dev.to/kittipat1413/concurrency-in-go-a-practical-guide-with-hands-on-examples-37od
