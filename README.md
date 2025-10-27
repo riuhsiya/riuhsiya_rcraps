@@ -89,6 +89,37 @@ func main() {
     }
 }
 ```
+```javascript
+// Import necessary modules
+const { EventEmitter } = require('events');
+
+const c1 = new EventEmitter();
+const c2 = new EventEmitter();
+
+// Simulate goroutine for c1
+setInterval(() => {
+    c1.emit('message', 'Every 500ms');
+}, 500);
+
+// Simulate goroutine for c2
+setInterval(() => {
+    c2.emit('message', 'Every 2 seconds');
+}, 2000);
+
+// Function to listen to events and process messages
+function main() {
+    c1.on('message', (msg1) => {
+        console.log(msg1);
+    });
+
+    c2.on('message', (msg2) => {
+        console.log(msg2);
+    });
+}
+
+// Run the main function
+main();
+```
 
 ```javascript
 const http = require('http');
