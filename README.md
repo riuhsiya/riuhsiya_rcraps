@@ -16,6 +16,81 @@ git add . && git commit -m "up" --amend && git push -u origin main --force-with-
 git add . && git commit -m "up" --amend && git push -u origin main --force-with-lease
 ```
 
+# HTTP Server
+
+```golang
+package main
+
+import (
+	"fmt"
+	"io"
+	"log"
+	"net"
+	"net/http"
+	"os"
+)
+
+func main() {
+	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "Hello, playground")
+	})
+
+	log.Println("Starting server...")
+	l, err := net.Listen("tcp", "localhost:8080")
+	if err != nil {
+		log.Fatal(err)
+	}
+	go func() {
+		log.Fatal(http.Serve(l, nil))
+	}()
+
+	log.Println("Sending request...")
+	res, err := http.Get("http://localhost:8080/hello")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Reading response...")
+	if _, err := io.Copy(os.Stdout, res.Body); err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+```javascript
+const http = require('http');
+
+// Create an HTTP server
+const server = http.createServer((req, res) => {
+  if (req.url === '/hello') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Hello, playground');
+  } else {
+    res.writeHead(404);
+    res.end();
+  }
+});
+
+// Start the server
+const PORT = 8080;
+server.listen(PORT, 'localhost', () => {
+  console.log('Starting server...');
+
+  // Send a request to the server after it starts
+  http.get(`http://localhost:${PORT}/hello`, (res) => {
+    console.log('Sending request...');
+    res.setEncoding('utf8');
+    res.on('data', (chunk) => {
+      process.stdout.write(chunk);
+    });
+  }).on('error', (err) => {
+    console.error(`Error: ${err.message}`);
+  });
+});
+```
+
+
+
 ```c
 #include <stdio.h>
 #include <stdlib.h>
