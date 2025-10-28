@@ -17,10 +17,46 @@ git add . && git commit -m "up" --amend && git push -u origin main --force-with-
 ```
 
 
+## adb-pair-localhost
+```bash
+adb pair localhost:40445 548330
+```
+
+
+## adb-pair-localhost
+```bash
+adb pair 192.168.1.5:40445 548330
+```
+
+
+## adb-connect-localhost
+```bash
+adb connect localhost:40445
+```
+
+
 ## pm
 adb -s 192.168.1.6 shell pm grant com.termux.api android.permission.WRITE_SECURE_SETTINGS
 ```bash
 adb -s 192.168.1.6 shell pm grant com.termux.api android.permission.WRITE_SECURE_SETTINGS
+```
+
+## rish
+/data/data/com.termux/files/usr/bin/rish -c 'svc data disable'
+```bash
+/data/data/com.termux/files/usr/bin/rish -c 'svc data disable'
+```
+
+## device_config
+```bash
+adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"
+adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"
+adb shell settings put global settings_enable_monitor_phantom_procs false
+```
+
+## nmap
+```bash
+nmap -sT -p30000-50000 --open localhost | grep "open" | cut -f1 -d/
 ```
 
 
