@@ -16,6 +16,14 @@ git add . && git commit -m "up" --amend && git push -u origin main --force-with-
 git add . && git commit -m "up" --amend && git push -u origin main --force-with-lease
 ```
 
+
+## pm
+adb -s 192.168.1.6 shell pm grant com.termux.api android.permission.WRITE_SECURE_SETTINGS
+```bash
+adb -s 192.168.1.6 shell pm grant com.termux.api android.permission.WRITE_SECURE_SETTINGS
+```
+
+
 # HTTP Server
 
 ```golang
